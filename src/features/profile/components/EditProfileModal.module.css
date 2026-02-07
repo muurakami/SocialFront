@@ -264,7 +264,6 @@
   cursor: not-allowed;
 }
 
-/* Scrollbar */
 .modal::-webkit-scrollbar {
   width: 8px;
 }

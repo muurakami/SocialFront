@@ -121,7 +121,6 @@ class PostCard extends React.Component {
 
         {showComments && (
           <div className={styles.comments}>
-            {/* Здесь будет компонент комментариев */}
             <p className={styles.commentsPlaceholder}>Comments section...</p>
           </div>
         )}

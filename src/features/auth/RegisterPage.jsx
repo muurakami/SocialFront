@@ -4,6 +4,7 @@ import AuthService from "../../services/AuthService";
 import RegisterForm from "./RegisterForm";
 import VerifyForm from "./VerifyForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
+import ResetPasswordForm from "./ResetPasswordForm";
 import styles from "./RegisterPage.module.css";
 
 class RegisterPage extends React.Component {
@@ -16,157 +17,162 @@ class RegisterPage extends React.Component {
     };
   }
 
-  handleRegister = async ({ firstName, lastName, email, password }) => {
-    console.log("1. handleRegister вызван:", { firstName, lastName, email });
+  handleRegister = async (userData) => {
+    console.log("🚀 Начинаем регистрацию:", userData);
     this.setState({ isLoading: true });
 
     try {
-      console.log("2. Отправляю запрос регистрации...");
-      const response = await AuthService.register({
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-      console.log("3. Ответ регистрации:", response);
+      await AuthService.register(userData);
+      console.log("✅ Регистрация успешна! Переходим к верификации...");
 
-      this.setState({ step: "VERIFY", email, isLoading: false });
-      console.log("4. Переключились на VERIFY");
+      this.setState(
+        {
+          isLoading: false,
+          step: "VERIFY",
+          email: userData.email,
+        },
+        () => {
+          console.log("🔄 STATE ОБНОВЛЕН:", this.state);
+        },
+      );
     } catch (error) {
-      console.error("5. Ошибка регистрации:", error);
-      alert("Ошибка регистрации: " + error.message);
+      console.error("❌ Ошибка регистрации:", error);
+      alert(error.message || "Ошибка регистрации");
       this.setState({ isLoading: false });
     }
   };
 
   handleVerify = async (code) => {
-    console.log("1. handleVerify вызван с кодом:", code);
-    console.log("2. Длина кода:", code.length);
-    console.log("3. Тип кода:", typeof code);
-
+    console.log("🚀 Отправляем код верификации:", code);
     this.setState({ isLoading: true });
 
     try {
-      console.log("4. Отправляю запрос верификации...");
-
-      // ИСПРАВЛЕНО: было verifyCode, стало verify
-      const response = await AuthService.verify(code);
-
-      console.log("5. Ответ верификации:", response);
-      console.log("6. Верификация успешна!");
-
-      alert("Регистрация завершена!");
-      window.location.href = "/";
+      await AuthService.verify(code);
+      alert("✅ Аккаунт подтвержден! Войдите в систему.");
+      window.location.href = "/login";
     } catch (error) {
-      console.error("7. Ошибка верификации:", error);
-      console.error("8. Текст ошибки:", error.message);
-      alert("Неверный код: " + error.message);
+      console.error("❌ Ошибка верификации:", error);
+      alert(error.message || "Неверный код");
+      this.setState({ isLoading: false });
+    }
+  };
+
+  handleForgotPassword = async (email) => {
+    if (!email) {
+      alert("Введите E-mail");
+      return;
+    }
+    this.setState({ isLoading: true, email });
+
+    try {
+      await AuthService.sendPasswordResetCode(email);
+      console.log("✅ Код сброса отправлен");
+      this.setState({
+        isLoading: false,
+        step: "RESET_PASSWORD",
+      });
+    } catch (error) {
+      alert(error.message);
+      this.setState({ isLoading: false });
+    }
+  };
+
+  handleResetPasswordFinal = async (code, newPassword) => {
+    this.setState({ isLoading: true });
+    try {
+      await AuthService.resetPassword(this.state.email, code, newPassword);
+      alert("🔑 Пароль изменен! Войдите с новым паролем.");
+      window.location.href = "/login";
+    } catch (error) {
+      alert(error.message);
       this.setState({ isLoading: false });
     }
   };
 
   handleResend = async () => {
-    console.log("1. handleResend вызван для email:", this.state.email);
-
     try {
-      console.log("2. Отправляю запрос повторной отправки...");
-      const response = await AuthService.resendCode(this.state.email);
-      console.log("3. Ответ:", response);
-
-      alert("Код отправлен повторно");
+      await AuthService.resendCode(this.state.email);
+      alert("Код отправлен повторно!");
     } catch (error) {
-      console.error("4. Ошибка отправки:", error);
-      alert("Ошибка отправки: " + error.message);
+      alert(error.message);
     }
   };
 
-  handleForgotPassword = async (email) => {
-    console.log("1. handleForgotPassword для:", email);
+  switchToForgotPassword = () => this.setState({ step: "FORGOTPASS" });
+  switchToRegister = () => this.setState({ step: "REGISTER" });
 
-    if (!email) {
-      alert("Введите E-mail");
-      return;
-    }
-
-    this.setState({ isLoading: true, email });
-
-    try {
-      console.log("2. Отправляю запрос сброса пароля...");
-
-      // ИСПРАВЛЕНО: было forgotPassword, стало sendPasswordResetCode
-      const response = await AuthService.sendPasswordResetCode(email);
-
-      console.log("3. Ответ:", response);
-      alert("Инструкция отправлена на почту " + email);
-      this.setState({ step: "VERIFY", isLoading: false });
-    } catch (error) {
-      console.error("4. Ошибка:", error);
-      alert("Ошибка: " + error.message);
-      this.setState({ isLoading: false });
-    }
-  };
-
-  switchToForgotPassword = () => {
-    console.log("Переключаемся на FORGOT_PASS");
-    this.setState({ step: "FORGOT_PASS" });
-  };
-
-  switchToRegister = () => {
-    console.log("Переключаемся на REGISTER");
-    this.setState({ step: "REGISTER" });
-  };
-
-  getHeaderText() {
+  getHeaderText = () => {
     const { step } = this.state;
-    if (step === "REGISTER") return "JOIN_NETWORK";
-    if (step === "VERIFY") return "VERIFY_IDENTITY";
-    if (step === "FORGOT_PASS") return "RECOVER_ACCESS";
-    return "AUTH";
-  }
+    switch (step) {
+      case "REGISTER":
+        return "JOIN NETWORK";
+      case "VERIFY":
+        return "VERIFY IDENTITY";
+      case "FORGOTPASS":
+        return "RECOVER ACCESS";
+      case "RESET_PASSWORD":
+        return "NEW CREDENTIALS";
+      default:
+        return "AUTH";
+    }
+  };
 
-  getSubtitleText() {
+  getSubtitleText = () => {
     const { step, email } = this.state;
-    if (step === "REGISTER") return "// Create new anonymous entity";
-    if (step === "VERIFY") return `// Enter code sent to ${email}`;
-    if (step === "FORGOT_PASS") return "// Initiate recovery protocol";
-    return "";
-  }
+    switch (step) {
+      case "REGISTER":
+        return "Create new anonymous entity";
+      case "VERIFY":
+        return `Enter code sent to ${email}`;
+      case "FORGOTPASS":
+        return "Initiate recovery protocol";
+      case "RESET_PASSWORD":
+        return "Secure your access";
+      default:
+        return "";
+    }
+  };
 
-  renderForm() {
+  renderForm = () => {
     const { step, isLoading } = this.state;
+    console.log("🖼️ Рендерим форму для шага:", step); // ОТЛАДКА
 
-    if (step === "REGISTER") {
-      return (
-        <RegisterForm
-          onSubmit={this.handleRegister}
-          onForgotPassword={this.switchToForgotPassword}
-          isLoading={isLoading}
-        />
-      );
+    switch (step) {
+      case "REGISTER":
+        return (
+          <RegisterForm
+            onSubmit={this.handleRegister}
+            onForgotPassword={this.switchToForgotPassword}
+            isLoading={isLoading}
+          />
+        );
+      case "VERIFY":
+        return (
+          <VerifyForm
+            onSubmit={this.handleVerify}
+            onResend={this.handleResend}
+            isLoading={isLoading}
+          />
+        );
+      case "FORGOTPASS":
+        return (
+          <ForgotPasswordForm
+            onSubmit={this.handleForgotPassword}
+            onBack={this.switchToRegister}
+            isLoading={isLoading}
+          />
+        );
+      case "RESET_PASSWORD":
+        return (
+          <ResetPasswordForm
+            onSubmit={this.handleResetPasswordFinal}
+            isLoading={isLoading}
+          />
+        );
+      default:
+        return <div style={{ color: "red" }}>Error: Unknown step {step}</div>;
     }
-
-    if (step === "VERIFY") {
-      return (
-        <VerifyForm
-          onSubmit={this.handleVerify}
-          onResend={this.handleResend}
-          isLoading={isLoading}
-        />
-      );
-    }
-
-    if (step === "FORGOT_PASS") {
-      return (
-        <ForgotPasswordForm
-          onSubmit={this.handleForgotPassword}
-          onBack={this.switchToRegister}
-          isLoading={isLoading}
-        />
-      );
-    }
-
-    return null;
-  }
+  };
 
   render() {
     return (

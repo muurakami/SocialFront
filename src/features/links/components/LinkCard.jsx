@@ -34,7 +34,6 @@ class LinkCard extends React.Component {
 
     return (
       <div className={styles.card} onClick={this.handleCardClick}>
-        {/* Изображение */}
         <div className={styles.imageContainer}>
           {!imageError ? (
             <>
@@ -57,11 +56,9 @@ class LinkCard extends React.Component {
             </div>
           )}
 
-          {/* Категория badge */}
           <div className={styles.categoryBadge}>{link.category}</div>
         </div>
 
-        {/* Контент */}
         <div className={styles.content}>
           <h3 className={styles.name}>{link.name}</h3>
           <p className={styles.description}>{link.description}</p>
@@ -74,7 +71,6 @@ class LinkCard extends React.Component {
           </div>
         </div>
 
-        {/* Кнопка подписки */}
         <div className={styles.actions}>
           <button
             className={`${styles.subscribeBtn} ${link.isSubscribed ? styles.subscribed : ""}`}
@@ -84,7 +80,6 @@ class LinkCard extends React.Component {
           </button>
         </div>
 
-        {/* Эффект сканирования */}
         <div className={styles.scanline} />
       </div>
     );

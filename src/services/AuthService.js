@@ -1,18 +1,19 @@
 import apiClient from "../api/apiClient";
 
 class AuthService {
+  // Регистрация
   static async register(userData) {
-    try {
-      const response = await apiClient.post("/api/users/registration", {
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-        password: userData.password,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || "Registration failed");
-    }
+    console.log("AuthService.register payload:", userData);
+
+    const response = await apiClient.post("/api/users/registration", {
+      name: userData.firstName,
+      secondName: userData.lastName,
+      email: userData.email,
+      password: userData.password,
+      birthDay: userData.birthDay || null,
+    });
+
+    return response.data;
   }
 
   static async verify(code) {
@@ -52,7 +53,16 @@ class AuthService {
         password: credentials.password,
       });
 
-      const { accessToken, refreshToken, user } = response.data;
+      console.log("LOGIN RESPONSE:", response.data);
+
+      const accessToken = response.data.accessToken || response.data.token;
+      const refreshToken = response.data.refreshToken;
+
+      const user = response.data.user || { email: credentials.email };
+
+      if (!accessToken) {
+        throw new Error("Access Token is missing in server response");
+      }
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
@@ -60,6 +70,7 @@ class AuthService {
 
       return { user, accessToken, refreshToken };
     } catch (error) {
+      console.error("Login Error Details:", error);
       throw new Error(error.response?.data?.message || "Login failed");
     }
   }
@@ -105,7 +116,9 @@ class AuthService {
 
     try {
       const response = await apiClient.post("/auth/refresh", { refreshToken });
-      const { accessToken, refreshToken: newRefreshToken } = response.data;
+
+      const accessToken = response.data.accessToken || response.data.token;
+      const newRefreshToken = response.data.refreshToken;
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
@@ -126,7 +139,13 @@ class AuthService {
 
   static getCurrentUser() {
     const userJson = localStorage.getItem("user");
-    return userJson ? JSON.parse(userJson) : null;
+    try {
+      if (!userJson || userJson === "undefined") return null;
+      return JSON.parse(userJson);
+    } catch (e) {
+      console.error("Error parsing user from localStorage", e);
+      return null;
+    }
   }
 
   static isAuthenticated() {

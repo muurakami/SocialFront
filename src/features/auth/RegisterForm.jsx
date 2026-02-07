@@ -11,6 +11,7 @@ class RegisterForm extends React.Component {
       lastName: "",
       email: "",
       password: "",
+      birthDay: "",
     };
   }
 
@@ -20,13 +21,20 @@ class RegisterForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { firstName, lastName, email, password } = this.state;
-    this.props.onSubmit({ firstName, lastName, email, password });
+    const { firstName, lastName, email, password, birthDay } = this.state;
+    console.log("📤 Отправляем:", {
+      firstName,
+      lastName,
+      email,
+      password,
+      birthDay,
+    });
+    this.props.onSubmit({ firstName, lastName, email, password, birthDay });
   };
 
   render() {
     const { isLoading, onForgotPassword } = this.props;
-    const { firstName, lastName, email, password } = this.state;
+    const { firstName, lastName, email, password, birthDay } = this.state;
 
     return (
       <form onSubmit={this.handleSubmit} className={styles.form}>
@@ -63,6 +71,23 @@ class RegisterForm extends React.Component {
           required
         />
 
+        <div style={{ marginBottom: "16px" }}>
+          <input
+            type="date"
+            value={birthDay}
+            onChange={this.handleChange("birthDay")}
+            style={{
+              width: "100%",
+              padding: "16px",
+              border: "2px solid #e1e5e9",
+              borderRadius: "12px",
+              fontSize: "16px",
+              background: "white",
+            }}
+            placeholder="Выбери дату"
+          />
+        </div>
+
         <LiquidButton type="submit" disabled={isLoading}>
           {isLoading ? "PROCESSING..." : "REGISTRATION"}
         </LiquidButton>
@@ -72,7 +97,7 @@ class RegisterForm extends React.Component {
           onClick={onForgotPassword}
           className={styles.linkButton}
         >
-          [ FORGOT_PASSWORD? ]
+          [ FORGOT PASSWORD? ]
         </button>
       </form>
     );

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "mock-api": "json-server --watch mock-db.json --port 8080 --delay 500",
     "dev:full": "concurrently \"npm run dev\" \"npm run mock-api\""
   },

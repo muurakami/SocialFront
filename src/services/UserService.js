@@ -1,20 +1,24 @@
 import apiClient from "../api/apiClient";
 
 class UserService {
-  static async getMe() {
+  static async getMyProfile(id) {
     try {
-      const response = await apiClient.get("/api/users/me");
-      localStorage.setItem("user", JSON.stringify(response.data));
+      const response = await apiClient.get(`/api/profile/my-profile/${id}`);
+
+      this._updateLocalStorageUser(response.data);
+
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Failed to fetch user");
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch profile",
+      );
     }
   }
 
-  static async getUserById(id) {
+  static async getPublicProfileByEmail(email) {
     try {
-      const response = await apiClient.get(`/api/users/${id}`, {
-        params: { id },
+      const response = await apiClient.get("/api/profile/findProfile", {
+        params: { email },
       });
       return response.data;
     } catch (error) {
@@ -24,13 +28,10 @@ class UserService {
 
   static async updateProfile(userId, data) {
     try {
-      const response = await apiClient.put(`/api/users/${userId}`, data);
+      const response = await apiClient.put(`/api/profile/${userId}`, data);
 
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const updatedUser = { ...user, ...response.data };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-
-      return updatedUser;
+      this._updateLocalStorageUser(response.data);
+      return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || "Update failed");
     }
@@ -58,13 +59,24 @@ class UserService {
       const response = await apiClient.put(
         `/api/users/update-user-password/${userId}`,
         null,
-        { params: { currentPassword, newPassword } },
+        {
+          params: { currenPassword: currentPassword, newPassword: newPassword },
+        },
       );
       return response.data;
     } catch (error) {
       throw new Error(
         error.response?.data?.message || "Password change failed",
       );
+    }
+  }
+  static _updateLocalStorageUser(newData) {
+    try {
+      const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+      const updatedUser = { ...currentUser, ...newData };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    } catch (e) {
+      console.error("Error updating local storage", e);
     }
   }
 }

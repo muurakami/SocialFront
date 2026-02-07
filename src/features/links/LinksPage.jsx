@@ -105,14 +105,12 @@ class LinksPage extends React.Component {
 
     let filtered = allLinks;
 
-    // Фильтр по подписке
     if (activeFilter === "subscribed") {
       filtered = filtered.filter((link) => link.isSubscribed);
     } else if (activeFilter === "discover") {
       filtered = filtered.filter((link) => !link.isSubscribed);
     }
 
-    // Поиск
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
@@ -148,7 +146,6 @@ class LinksPage extends React.Component {
         <Header user={user} />
         <div className={styles.page}>
           <div className={styles.container}>
-            {/* Заголовок */}
             <div className={styles.header}>
               <h1 className={styles.title}>
                 <span className={styles.icon}>⚡</span>
@@ -157,13 +154,11 @@ class LinksPage extends React.Component {
               <p className={styles.subtitle}>Explore and join communities</p>
             </div>
 
-            {/* Поиск */}
             <LinksSearch
               onSearch={this.handleSearch}
               searchQuery={searchQuery}
             />
 
-            {/* Фильтры */}
             <div className={styles.filters}>
               <button
                 className={`${styles.filterBtn} ${activeFilter === "all" ? styles.active : ""}`}
@@ -185,14 +180,12 @@ class LinksPage extends React.Component {
               </button>
             </div>
 
-            {/* Счетчик */}
             <div className={styles.count}>
               <span className={styles.countText}>
                 {filteredLinks.length} links found
               </span>
             </div>
 
-            {/* Сетка линков */}
             <LinksGrid
               links={filteredLinks}
               onSubscribe={this.handleSubscribe}

@@ -18,7 +18,7 @@ class PostService {
     const formData = new FormData();
     formData.append("content", content);
     images.forEach((image) => {
-      formData.append("images", image); // Spring примет как List<MultipartFile>
+      formData.append("images", image);
     });
 
     return api.post("/posts", formData, {
@@ -28,7 +28,7 @@ class PostService {
 
   static async toggleLike(postId) {
     const response = await api.post(`/posts/${postId}/like`);
-    return response.data; // { isLiked: boolean, likeCount: number }
+    return response.data;
   }
 
   static async addComment(postId, content) {
