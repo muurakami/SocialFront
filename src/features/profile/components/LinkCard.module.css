@@ -1,0 +1,94 @@
+.card {
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-left: 4px solid var(--link-color);
+  border-radius: 12px;
+  padding: var(--spacing-element);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--link-color);
+  box-shadow: 0 0 20px var(--link-color);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  background: var(--color-glass);
+  border-color: var(--link-color);
+  box-shadow: 0 0 20px rgba(var(--link-color), 0.3);
+  transform: translateX(4px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--link-color);
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--link-color);
+  }
+  50% {
+    box-shadow: 0 0 0 4px transparent;
+  }
+}
+
+.name {
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  flex: 1;
+}
+
+.badge {
+  background: var(--color-primary);
+  color: var(--color-background);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.members {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}

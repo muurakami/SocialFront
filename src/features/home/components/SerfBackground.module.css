@@ -1,0 +1,117 @@
+.container {
+  position: absolute;
+  right: 70%;
+  top: 30%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 45%;
+  max-width: 600px;
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.6));
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(-52%);
+  }
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  opacity: 0.8;
+  filter: grayscale(0%) brightness(1.1) contrast(1.2);
+  animation: fadeIn 2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateX(50px);
+  }
+  to {
+    opacity: 0.8;
+    transform: scale(1) translateX(0);
+  }
+}
+
+@media (max-width: 1200px) {
+  .container {
+    width: 50%;
+    right: 5%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    width: 55%;
+    right: 0%;
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    position: relative;
+    width: 80%;
+    right: auto;
+    transform: none;
+    margin: 0 auto 2rem;
+    opacity: 0.4;
+  }
+}
+
+.particles {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40%;
+  height: 30%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.particle {
+  position: absolute;
+  bottom: var(--y);
+  right: var(--x);
+  width: 4px;
+  height: 4px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-primary);
+  animation: particleFloat 3s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes particleFloat {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.5);
+    opacity: 0.3;
+  }
+}
+
+.mask {
+  position: absolute;
+  bottom: -10%;
+  right: -15%;
+  width: 130%;
+  height: 40%;
+  background: linear-gradient(
+    to top right,
+    var(--color-background) 30%,
+    rgba(10, 14, 10, 0.9) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}

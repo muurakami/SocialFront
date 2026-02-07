@@ -1,0 +1,129 @@
+.header {
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border: 2px solid var(--color-primary-border);
+  border-radius: 20px;
+  padding: var(--spacing-block);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-inner);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 136, 0.1),
+    transparent
+  );
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.avatarSection {
+  position: relative;
+}
+
+.status {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-background);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--color-primary);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--color-primary);
+  }
+  50% {
+    box-shadow: 0 0 0 4px transparent;
+  }
+}
+
+.statusText {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  font-family: var(--font-mono);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.email {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--color-primary);
+  margin: 0 0 4px 0;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-element);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .info {
+    order: 2;
+  }
+
+  .actions {
+    order: 3;
+    width: 100%;
+  }
+}

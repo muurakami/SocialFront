@@ -1,0 +1,67 @@
+.title {
+  font-family: var(--font-primary);
+  font-size: var(--text-xlarge);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-element);
+  text-align: center;
+}
+
+.subtitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-block); /* 48px между блоками */
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-element); /* 16px между элементами формы */
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-element);
+}
+
+/* На планшетах и больше - два столбца */
+@media (min-width: 640px) {
+  .row {
+    flex-direction: row;
+  }
+}
+
+.codeInput {
+  text-align: center;
+  letter-spacing: 0.3em;
+  font-family: var(--font-mono);
+  font-size: var(--text-large);
+  font-weight: 600;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  margin-top: var(--spacing-inner);
+  padding: var(--spacing-element);
+  transition: color var(--transition-speed) ease;
+  min-height: 44px; /* Доступность на мобильных */
+}
+
+.linkButton:hover {
+  color: var(--color-primary);
+}
+
+.linkButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
