@@ -7,7 +7,7 @@ class EncryptButton extends React.Component {
     this.state = {
       displayText: props.children,
     };
-    this.chars = "!<>-_\\/[]{}—=+*^?#________"; // Символы для шифрования
+    this.chars = "!<>-_\\/[]{}—=+*^?#________";
     this.intervalId = null;
   }
 
@@ -38,13 +38,13 @@ class EncryptButton extends React.Component {
           .join(""),
       });
 
-      iteration += 1 / 3; // Скорость расшифровки
+      iteration += 1 / 3;
 
       if (iteration >= finalText.length) {
         clearInterval(this.intervalId);
         this.setState({ displayText: finalText });
       }
-    }, 30); // 30ms между кадрами
+    }, 30);
   };
 
   decrypt = () => {

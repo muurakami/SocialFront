@@ -71,20 +71,18 @@ class RegisterForm extends React.Component {
           required
         />
 
-        <div style={{ marginBottom: "16px" }}>
+        <div className={styles.dateInputWrapper}>
           <input
-            type="date"
+            type="text"
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => {
+              if (!e.target.value) e.target.type = "text";
+            }}
+            placeholder="BIRTHDAY"
             value={birthDay}
             onChange={this.handleChange("birthDay")}
-            style={{
-              width: "100%",
-              padding: "16px",
-              border: "2px solid #e1e5e9",
-              borderRadius: "12px",
-              fontSize: "16px",
-              background: "white",
-            }}
-            placeholder="Выбери дату"
+            className={styles.dateInput}
+            required
           />
         </div>
 
