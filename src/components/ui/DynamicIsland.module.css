@@ -1,0 +1,127 @@
+.island {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid var(--color-primary-border);
+  border-radius: 32px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  z-index: 10001;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.island.top {
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.island.bottom {
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.island:hover {
+  border-color: var(--color-primary);
+  box-shadow: 
+    0 12px 48px rgba(0, 255, 136, 0.3),
+    0 0 0 1px var(--color-primary) inset;
+}
+
+.island.expanded {
+  min-width: 340px;
+  border-radius: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.compact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: var(--font-primary);
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.expandedContent {
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-primary-border);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .island {
+    left: 16px;
+    right: 16px;
+    transform: none;
+  }
+
+  .island.top {
+    top: 16px;
+  }
+
+  .island.bottom {
+    bottom: 16px;
+  }
+
+  .island.expanded {
+    min-width: auto;
+    width: calc(100% - 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island,
+  .expandedContent {
+    animation: none !important;
+    transition: none !important;
+  }
+}

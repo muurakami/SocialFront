@@ -1,0 +1,241 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: var(--spacing-element);
+  padding-top: var(--spacing-element);
+  border-top: 1px solid var(--color-primary-border);
+}
+
+.commentForm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.commentInput {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 20px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: var(--font-primary);
+  outline: none;
+  transition: all var(--transition-speed) ease;
+}
+
+.commentInput:focus {
+  border-color: var(--color-primary);
+  background: var(--color-glass);
+}
+
+.commentInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.submitButton {
+  padding: 10px 20px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 20px;
+  color: var(--color-background);
+  font-size: 14px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  box-shadow: 0 0 12px var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submitButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.commentBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.commentAuthor {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: var(--font-primary);
+}
+
+.commentTime {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.edited {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-style: italic;
+}
+
+.commentContent {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.commentActions {
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.commentAction {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-speed) ease;
+}
+
+.commentAction:hover {
+  color: var(--color-primary);
+}
+
+.commentActionDanger:hover {
+  color: #ff4444;
+}
+
+.commentAction:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editInput {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: var(--font-primary);
+  outline: none;
+  transition: all var(--transition-speed) ease;
+}
+
+.editInput:focus {
+  border-color: var(--color-primary);
+  background: var(--color-glass);
+}
+
+.editActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.editCancel,
+.editSave {
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.editCancel {
+  background: transparent;
+  border: 2px solid var(--color-primary-border);
+  color: var(--color-text);
+}
+
+.editCancel:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-dim);
+}
+
+.editSave {
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  color: var(--color-background);
+}
+
+.editSave:hover:not(:disabled) {
+  box-shadow: 0 0 12px var(--color-primary);
+}
+
+.editSave:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editCancel:focus-visible,
+.editSave:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.noComments {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-family: var(--font-mono);
+  margin: 16px 0;
+}
+
+@media (max-width: 640px) {
+  .commentForm {
+    gap: 8px;
+  }
+
+  .submitButton {
+    padding: 10px 16px;
+  }
+}

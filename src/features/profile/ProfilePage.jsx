@@ -1,7 +1,6 @@
 import React from "react";
 import PostGrid from "./components/PostGrid";
 import EditProfileModal from "./components/EditProfileModal";
-import EncryptButton from "../../components/ui/EncryptButton";
 import styles from "./ProfilePage.module.css";
 import UserService from "../../services/UserService";
 
@@ -19,8 +18,19 @@ class ProfilePage extends React.Component {
 
   async componentDidMount() {
     await this.fetchFullUserProfile();
-
     await this.loadUserPosts();
+
+    const { onEditProfileMount } = this.props;
+    if (onEditProfileMount) {
+      onEditProfileMount(this.handleEditClick);
+    }
+  }
+
+  componentWillUnmount() {
+    const { onEditProfileMount } = this.props;
+    if (onEditProfileMount) {
+      onEditProfileMount(null);
+    }
   }
 
   fetchFullUserProfile = async () => {
@@ -48,11 +58,17 @@ class ProfilePage extends React.Component {
 
   loadUserPosts = async () => {
     try {
-      const posts = [];
+      const { user } = this.state;
+      if (!user || !user.id) {
+        this.setState({ posts: [], isLoadingPosts: false });
+        return;
+      }
+
+      const posts = await UserService.getUserPosts(user.id);
       this.setState({ posts, isLoadingPosts: false });
     } catch (error) {
       console.error("Failed to load posts:", error);
-      this.setState({ isLoadingPosts: false });
+      this.setState({ posts: [], isLoadingPosts: false });
     }
   };
 
@@ -66,6 +82,126 @@ class ProfilePage extends React.Component {
 
   handleSaveProfile = (updatedUser) => {
     this.setState({ user: updatedUser });
+  };
+
+  handleLike = (postId) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            isLiked: !post.isLiked,
+            likeCount: post.isLiked ? post.likeCount - 1 : post.likeCount + 1,
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleRepost = (postId) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            isReposted: !post.isReposted,
+            repostCount: post.isReposted ? post.repostCount - 1 : post.repostCount + 1,
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleEditPost = (postId, newContent) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            content: newContent,
+            editedAt: new Date().toISOString(),
+            editHistory: [
+              ...(post.editHistory || []),
+              {
+                content: post.content,
+                editedAt: new Date().toISOString(),
+              }
+            ],
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleDeletePost = (postId) => {
+    this.setState((prev) => ({
+      posts: prev.posts.filter((post) => post.id !== postId),
+    }));
+  };
+
+  handleAddComment = (postId, content) => {
+    const { user } = this.state;
+    
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          const newComment = {
+            id: Date.now(),
+            content,
+            author: user,
+            createdAt: new Date().toISOString(),
+          };
+          
+          return {
+            ...post,
+            comments: [...(post.comments || []), newComment],
+            commentCount: (post.commentCount || 0) + 1,
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleEditComment = (postId, commentId, newContent) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: post.comments.map((comment) => {
+              if (comment.id === commentId) {
+                return {
+                  ...comment,
+                  content: newContent,
+                  editedAt: new Date().toISOString(),
+                };
+              }
+              return comment;
+            }),
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleDeleteComment = (postId, commentId) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: post.comments.filter((comment) => comment.id !== commentId),
+            commentCount: Math.max(0, (post.commentCount || 0) - 1),
+          };
+        }
+        return post;
+      }),
+    }));
   };
 
   getDisplayName = (user) => {
@@ -105,18 +241,23 @@ class ProfilePage extends React.Component {
           </div>
 
           <div className={styles.infoSection}>
-            <div className={styles.topRow}>
-              <h1 className={styles.username}>{this.getDisplayName(user)}</h1>
-              <EncryptButton onClick={this.handleEditClick}>
-                EDIT_PROFILE
-              </EncryptButton>
-            </div>
-
+            <h1 className={styles.username}>{this.getDisplayName(user)}</h1>
             {user.bio && <p className={styles.bio}>{user.bio}</p>}
           </div>
         </div>
 
-        <PostGrid posts={posts} isLoading={isLoadingPosts} />
+        <PostGrid 
+          posts={posts} 
+          isLoading={isLoadingPosts} 
+          onLike={this.handleLike} 
+          onRepost={this.handleRepost}
+          onEdit={this.handleEditPost}
+          onDelete={this.handleDeletePost}
+          onAddComment={this.handleAddComment}
+          onEditComment={this.handleEditComment}
+          onDeleteComment={this.handleDeleteComment}
+          currentUser={user}
+        />
 
         {isEditModalOpen && (
           <EditProfileModal

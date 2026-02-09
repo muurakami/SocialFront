@@ -49,31 +49,46 @@
 .primary {
   background: var(--color-primary);
   color: var(--color-background);
-  box-shadow: var(--shadow-base);
+  border: 2px solid var(--color-primary);
+  box-shadow: 
+    0 4px 16px rgba(0, 255, 136, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
 .primary:hover:not(:disabled) {
   background: var(--color-primary);
   box-shadow:
-    0 12px 48px rgba(0, 255, 136, 0.3),
-    0 0 0 4px var(--color-primary-dim);
-  transform: translateY(-3px);
+    0 12px 48px rgba(0, 255, 136, 0.5),
+    0 0 24px var(--color-primary),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  transform: translateY(-3px) scale(1.02);
 }
 
 .primary:active:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(0) scale(0.98);
 }
 
 .secondary {
   background: transparent;
   color: var(--color-text-muted);
   border: 2px solid var(--color-primary-border);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 }
 
 .secondary:hover:not(:disabled) {
   color: var(--color-primary);
   border-color: var(--color-primary);
   background: var(--color-primary-dim);
+  box-shadow: 
+    0 8px 24px rgba(0, 255, 136, 0.2),
+    0 0 16px var(--color-primary-dim);
+  transform: translateY(-2px);
+}
+
+.secondary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
 }
 
 @media (hover: none) and (pointer: coarse) {

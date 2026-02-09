@@ -1,18 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Avatar from "../ui/Avatar";
-import AuthService from "../../services/AuthService";
+import SettingsMenu from "./SettingsMenu";
 import styles from "./Navigation.module.css";
 
 class Navigation extends React.Component {
-  handleLogout = () => {
-    if (confirm("Are you sure you want to logout?")) {
-      AuthService.logout();
-    }
-  };
-
   render() {
-    const { user } = this.props;
+    const { user, onEditProfile } = this.props;
 
     return (
       <nav
@@ -34,16 +28,27 @@ class Navigation extends React.Component {
 
         {user ? (
           <>
-            <button
-              onClick={this.handleLogout}
-              className={styles.navItem}
-              aria-label="Logout"
+            <NavLink
+              to="/messages"
+              className={({ isActive }) =>
+                `${styles.navItem} ${isActive ? styles.active : ""}`
+              }
+              aria-label="Messages"
             >
-              <span className={styles.icon}>↪</span>
-              <span className={styles.label}>Logout</span>
-            </button>
+              <span className={styles.icon}>✉</span>
+              <span className={styles.label}>Messages</span>
+            </NavLink>
 
-            {/* Аватарка - переход на профиль */}
+            <NavLink
+              to="/groups"
+              className={({ isActive }) =>
+                `${styles.navItem} ${isActive ? styles.active : ""}`
+              }
+              aria-label="Groups"
+            >
+              <span className={styles.icon}>👥</span>
+              <span className={styles.label}>Groups</span>
+            </NavLink>
             <NavLink
               to="/profile"
               className={({ isActive }) =>
@@ -57,6 +62,8 @@ class Navigation extends React.Component {
                 size={32}
               />
             </NavLink>
+
+            <SettingsMenu onEditProfile={onEditProfile} />
           </>
         ) : (
           <NavLink
@@ -68,17 +75,6 @@ class Navigation extends React.Component {
             <span className={styles.label}>Join</span>
           </NavLink>
         )}
-
-        <NavLink
-          to="/links"
-          className={({ isActive }) =>
-            `${styles.navItem} ${isActive ? styles.active : ""}`
-          }
-          aria-label="Links"
-        >
-          <span className={styles.icon}>⚡</span>
-          <span className={styles.label}>Links</span>
-        </NavLink>
       </nav>
     );
   }

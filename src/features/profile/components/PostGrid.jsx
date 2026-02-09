@@ -1,22 +1,78 @@
 import React from "react";
+import PostCard from "../../../components/post/PostCard";
+import Skeleton from "../../../components/ui/Skeleton";
 import styles from "./PostGrid.module.css";
 
 class PostGrid extends React.Component {
-  handlePostClick = (post) => {
-    if (this.props.onPostClick) {
-      this.props.onPostClick(post);
+  handleLike = (postId) => {
+    const { onLike } = this.props;
+    if (onLike) {
+      onLike(postId);
     }
   };
 
+  handleRepost = (postId) => {
+    const { onRepost } = this.props;
+    if (onRepost) {
+      onRepost(postId);
+    }
+  };
+
+  handleEdit = (postId, newContent) => {
+    const { onEdit } = this.props;
+    if (onEdit) {
+      onEdit(postId, newContent);
+    }
+  };
+
+  handleDelete = (postId) => {
+    const { onDelete } = this.props;
+    if (onDelete) {
+      onDelete(postId);
+    }
+  };
+
+  handleAddComment = (postId, content) => {
+    const { onAddComment } = this.props;
+    if (onAddComment) {
+      onAddComment(postId, content);
+    }
+  };
+
+  handleEditComment = (postId, commentId, newContent) => {
+    const { onEditComment } = this.props;
+    if (onEditComment) {
+      onEditComment(postId, commentId, newContent);
+    }
+  };
+
+  handleDeleteComment = (postId, commentId) => {
+    const { onDeleteComment } = this.props;
+    if (onDeleteComment) {
+      onDeleteComment(postId, commentId);
+    }
+  };
+
+  renderSkeletons() {
+    return Array.from({ length: 3 }).map((_, index) => (
+      <div key={`skeleton-${index}`} className={styles.skeletonCard}>
+        <div className={styles.skeletonHeader}>
+          <Skeleton variant="avatar" />
+          <div style={{ flex: 1 }}>
+            <Skeleton variant="title" width="40%" />
+            <Skeleton variant="text" width="20%" />
+          </div>
+        </div>
+        <Skeleton variant="text" count={3} />
+      </div>
+    ));
+  }
+
   render() {
-    const { posts, isLoading } = this.props;
+    const { posts, isLoading, currentUser } = this.props;
 
     if (isLoading) {
-      return (
-        <div className={styles.loading}>
-          <div className={styles.spinner}>LOADING_POSTS...</div>
-        </div>
-      );
+      return <div className={styles.feed}>{this.renderSkeletons()}</div>;
     }
 
     if (!posts || posts.length === 0) {
@@ -24,59 +80,26 @@ class PostGrid extends React.Component {
         <div className={styles.empty}>
           <div className={styles.emptyIcon}>📭</div>
           <p className={styles.emptyText}>NO_POSTS_YET</p>
+          <p className={styles.emptySubtext}>Share your first thought with the network</p>
         </div>
       );
     }
 
     return (
-      <div className={styles.grid}>
+      <div className={styles.feed}>
         {posts.map((post) => (
-          <div
+          <PostCard
             key={post.id}
-            className={styles.gridItem}
-            onClick={() => this.handlePostClick(post)}
-          >
-            {post.images && post.images.length > 0 ? (
-              <>
-                <img
-                  src={post.images[0]}
-                  alt={post.content || "Post"}
-                  className={styles.postImage}
-                />
-                <div className={styles.overlay}>
-                  <div className={styles.stats}>
-                    <span className={styles.stat}>
-                      <span className={styles.icon}>♥</span>
-                      {post.likeCount || 0}
-                    </span>
-                    <span className={styles.stat}>
-                      <span className={styles.icon}>💬</span>
-                      {post.commentCount || 0}
-                    </span>
-                  </div>
-                </div>
-                {post.images.length > 1 && (
-                  <div className={styles.multipleIcon}>⊞</div>
-                )}
-              </>
-            ) : (
-              <div className={styles.textPost}>
-                <p className={styles.textContent}>{post.content}</p>
-                <div className={styles.textOverlay}>
-                  <div className={styles.stats}>
-                    <span className={styles.stat}>
-                      <span className={styles.icon}>♥</span>
-                      {post.likeCount || 0}
-                    </span>
-                    <span className={styles.stat}>
-                      <span className={styles.icon}>💬</span>
-                      {post.commentCount || 0}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+            post={post}
+            currentUser={currentUser}
+            onLike={this.handleLike}
+            onRepost={this.handleRepost}
+            onEdit={this.handleEdit}
+            onDelete={this.handleDelete}
+            onAddComment={this.handleAddComment}
+            onEditComment={this.handleEditComment}
+            onDeleteComment={this.handleDeleteComment}
+          />
         ))}
       </div>
     );

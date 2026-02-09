@@ -1,0 +1,67 @@
+.orb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core {
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  box-shadow: 0 0 40px currentColor;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.ring1,
+.ring2,
+.ring3 {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid;
+  opacity: 0.6;
+}
+
+.ring1 {
+  animation: ripple 3s ease-out infinite;
+}
+
+.ring2 {
+  animation: ripple 3s ease-out infinite 1s;
+}
+
+.ring3 {
+  animation: ripple 3s ease-out infinite 2s;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .core,
+  .ring1,
+  .ring2,
+  .ring3 {
+    animation: none !important;
+  }
+}

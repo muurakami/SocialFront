@@ -1,0 +1,120 @@
+.container {
+  padding: 16px 24px;
+  border-top: 2px solid var(--color-primary-border);
+  background: var(--color-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary),
+    transparent
+  );
+  opacity: 0.3;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 12px;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--color-primary);
+  background: var(--color-glass);
+  box-shadow: 
+    0 8px 24px rgba(0, 255, 136, 0.2),
+    0 0 0 1px var(--color-primary) inset;
+  transform: translateY(-2px);
+}
+
+.textarea {
+  flex: 1;
+  min-height: 24px;
+  max-height: 120px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 15px;
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  color: var(--color-background);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  box-shadow: 
+    0 4px 12px rgba(0, 255, 136, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.sendButton:hover:not(:disabled) {
+  background: var(--color-primary);
+  transform: scale(1.15) rotate(15deg);
+  box-shadow: 
+    0 6px 20px rgba(0, 255, 136, 0.5),
+    0 0 16px var(--color-primary);
+}
+
+.sendButton:active:not(:disabled) {
+  transform: scale(1) rotate(0deg);
+}
+
+.sendButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.sendButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.sendIcon {
+  font-size: 18px;
+  line-height: 1;
+  transform: translateX(1px);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 12px 16px;
+  }
+}

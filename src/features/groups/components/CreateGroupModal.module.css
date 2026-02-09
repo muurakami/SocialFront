@@ -1,0 +1,269 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  width: 100%;
+  max-width: 540px;
+  background: var(--color-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 20px;
+  box-shadow: 
+    0 20px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary),
+    transparent
+  );
+  opacity: 0.6;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: 2px solid var(--color-primary-border);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.closeButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  padding: 0;
+}
+
+.closeButton:hover {
+  background: #ff4444;
+  border-color: #ff4444;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  letter-spacing: 1px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 16px;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 12px;
+  color: var(--color-text);
+  font-size: 15px;
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: all var(--transition-speed) ease;
+}
+
+.textarea:focus {
+  border-color: var(--color-primary);
+  background: var(--color-glass);
+  box-shadow: 0 0 16px var(--color-primary-dim);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.charCount {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.checkboxLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.checkboxLabel:hover {
+  border-color: var(--color-primary);
+  background: var(--color-glass);
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkboxText {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: var(--font-primary);
+}
+
+.checkboxIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.checkbox:checked + .checkboxText .checkboxIcon {
+  filter: brightness(1.5);
+}
+
+.checkboxHint {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-left: 32px;
+}
+
+.checkbox:checked ~ .checkboxHint {
+  color: var(--color-primary);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 16px;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 12px;
+  color: var(--color-text);
+  font-size: 16px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  letter-spacing: 1px;
+}
+
+.cancelButton:hover {
+  border-color: var(--color-primary);
+  background: var(--color-glass);
+}
+
+.cancelButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .modal {
+    max-width: 100%;
+  }
+
+  .header {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .form {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .modal {
+    animation: none;
+  }
+}

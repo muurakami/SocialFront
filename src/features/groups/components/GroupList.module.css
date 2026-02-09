@@ -1,0 +1,129 @@
+.list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: var(--color-primary-dim);
+  border-radius: 4px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-border);
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  align-items: center;
+  position: relative;
+}
+
+.item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: var(--color-primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.item:hover {
+  background: var(--color-primary-dim);
+  transform: translateX(4px);
+}
+
+.item:hover::before {
+  opacity: 0.05;
+}
+
+.item:active {
+  transform: translateX(2px) scale(0.98);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.item.selected {
+  background: var(--color-primary-dim);
+  border-color: var(--color-primary);
+}
+
+.item.notJoined {
+  opacity: 0.6;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.privateBadge {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.memberCount {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  margin: 0;
+}
+
+.skeletonItem {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  align-items: center;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.emptyText {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-family: var(--font-mono);
+}

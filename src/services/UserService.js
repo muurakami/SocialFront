@@ -70,6 +70,18 @@ class UserService {
       );
     }
   }
+
+  static async getUserPosts(userId) {
+    try {
+      const response = await apiClient.get(`/api/posts/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch user posts",
+      );
+    }
+  }
+
   static _updateLocalStorageUser(newData) {
     try {
       const currentUser = JSON.parse(localStorage.getItem("user") || "{}");

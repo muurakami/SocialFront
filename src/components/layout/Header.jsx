@@ -57,7 +57,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, onEditProfile } = this.props;
     const { placeholder, isSearchOpen } = this.state;
 
     return (
@@ -82,7 +82,7 @@ class Header extends React.Component {
             </span>
           </div>
 
-          <Navigation user={user} />
+          <Navigation user={user} onEditProfile={onEditProfile} />
         </div>
       </header>
     );

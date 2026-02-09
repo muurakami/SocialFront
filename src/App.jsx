@@ -6,8 +6,10 @@ import HomePage from "./features/home/HomePage";
 import RegisterPage from "./features/auth/RegisterPage";
 import FeedPage from "./features/feed/FeedPage";
 import ProfilePage from "./features/profile/ProfilePage";
-import LinksPage from "./features/links/LinksPage";
 import LoginPage from "./features/auth/LoginPage";
+import MessagesPage from "./features/messages/MessagesPage";
+import GroupsPage from "./features/groups/GroupsPage";
+import ToastContainer from "./components/ui/Toast";
 
 class App extends React.Component {
   constructor(props) {
@@ -15,12 +17,24 @@ class App extends React.Component {
     this.state = {
       user: UserManager.load(),
       isLoading: true,
+      editProfileHandler: null,
     };
   }
 
   componentDidMount() {
     this.setState({ isLoading: false });
   }
+
+  handleEditProfileMount = (handler) => {
+    this.setState({ editProfileHandler: handler });
+  };
+
+  handleEditProfileClick = () => {
+    const { editProfileHandler } = this.state;
+    if (editProfileHandler) {
+      editProfileHandler();
+    }
+  };
 
   renderRoutes() {
     const { user } = this.state;
@@ -31,7 +45,7 @@ class App extends React.Component {
           path="/"
           element={
             <>
-              {user && <Header user={user} />}
+              {user && <Header user={user} onEditProfile={this.handleEditProfileClick} />}
               {user ? <FeedPage user={user} /> : <HomePage />}
             </>
           }
@@ -42,7 +56,7 @@ class App extends React.Component {
           element={
             user ? (
               <>
-                <Header user={user} />
+                <Header user={user} onEditProfile={this.handleEditProfileClick} />
                 <FeedPage user={user} />
               </>
             ) : (
@@ -56,8 +70,8 @@ class App extends React.Component {
           element={
             user ? (
               <>
-                <Header user={user} />
-                <ProfilePage user={user} />
+                <Header user={user} onEditProfile={this.handleEditProfileClick} />
+                <ProfilePage user={user} onEditProfileMount={this.handleEditProfileMount} />
               </>
             ) : (
               <Navigate to="/" replace />
@@ -66,9 +80,30 @@ class App extends React.Component {
         />
 
         <Route
-          path="/links"
+          path="/messages"
           element={
-            user ? <LinksPage user={user} /> : <Navigate to="/" replace />
+            user ? (
+              <>
+                <Header user={user} onEditProfile={this.handleEditProfileClick} />
+                <MessagesPage user={user} />
+              </>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/groups"
+          element={
+            user ? (
+              <>
+                <Header user={user} onEditProfile={this.handleEditProfileClick} />
+                <GroupsPage user={user} />
+              </>
+            ) : (
+              <Navigate to="/" replace />
+            )
           }
         />
 
@@ -95,7 +130,12 @@ class App extends React.Component {
       );
     }
 
-    return <BrowserRouter>{this.renderRoutes()}</BrowserRouter>;
+    return (
+      <BrowserRouter>
+        {this.renderRoutes()}
+        <ToastContainer />
+      </BrowserRouter>
+    );
   }
 }
 

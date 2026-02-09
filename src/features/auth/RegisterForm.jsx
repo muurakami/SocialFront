@@ -1,6 +1,7 @@
 import React from "react";
 import LiquidInput from "../../components/ui/LiquidInput";
 import LiquidButton from "../../components/ui/LiquidButton";
+import DatePicker from "../../components/ui/DatePicker";
 import styles from "./RegisterPage.module.css";
 
 class RegisterForm extends React.Component {
@@ -71,20 +72,12 @@ class RegisterForm extends React.Component {
           required
         />
 
-        <div className={styles.dateInputWrapper}>
-          <input
-            type="text"
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!e.target.value) e.target.type = "text";
-            }}
-            placeholder="BIRTHDAY"
-            value={birthDay}
-            onChange={this.handleChange("birthDay")}
-            className={styles.dateInput}
-            required
-          />
-        </div>
+        <DatePicker
+          placeholder="BIRTHDAY"
+          value={birthDay}
+          onChange={this.handleChange("birthDay")}
+          required
+        />
 
         <LiquidButton type="submit" disabled={isLoading}>
           {isLoading ? "PROCESSING..." : "REGISTRATION"}

@@ -72,7 +72,7 @@ class FeedPage extends React.Component {
     }, 1000);
   }
 
-  handleCreatePost = async (content) => {
+  handleCreatePost = async (content, images = []) => {
     const { user } = this.props;
 
     if (!user) {
@@ -80,15 +80,21 @@ class FeedPage extends React.Component {
       return;
     }
 
+    const imageUrls = images.map((_, index) => 
+      `https://picsum.photos/600/400?random=${Date.now() + index}`
+    );
+
     const newPost = {
       id: Date.now(),
       content,
-      images: [],
+      images: imageUrls,
       author: user,
       createdAt: new Date().toISOString(),
       likeCount: 0,
       commentCount: 0,
+      repostCount: 0,
       isLiked: false,
+      isReposted: false,
     };
 
     this.setState((prev) => ({
@@ -104,6 +110,111 @@ class FeedPage extends React.Component {
             ...post,
             isLiked: !post.isLiked,
             likeCount: post.isLiked ? post.likeCount - 1 : post.likeCount + 1,
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleRepost = (postId) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            isReposted: !post.isReposted,
+            repostCount: post.isReposted ? post.repostCount - 1 : post.repostCount + 1,
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleEditPost = (postId, newContent) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            content: newContent,
+            editedAt: new Date().toISOString(),
+            editHistory: [
+              ...(post.editHistory || []),
+              {
+                content: post.content,
+                editedAt: new Date().toISOString(),
+              }
+            ],
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleDeletePost = (postId) => {
+    this.setState((prev) => ({
+      posts: prev.posts.filter((post) => post.id !== postId),
+    }));
+  };
+
+  handleAddComment = (postId, content) => {
+    const { user } = this.props;
+    
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          const newComment = {
+            id: Date.now(),
+            content,
+            author: user,
+            createdAt: new Date().toISOString(),
+          };
+          
+          return {
+            ...post,
+            comments: [...(post.comments || []), newComment],
+            commentCount: (post.commentCount || 0) + 1,
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleEditComment = (postId, commentId, newContent) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: post.comments.map((comment) => {
+              if (comment.id === commentId) {
+                return {
+                  ...comment,
+                  content: newContent,
+                  editedAt: new Date().toISOString(),
+                };
+              }
+              return comment;
+            }),
+          };
+        }
+        return post;
+      }),
+    }));
+  };
+
+  handleDeleteComment = (postId, commentId) => {
+    this.setState((prev) => ({
+      posts: prev.posts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: post.comments.filter((comment) => comment.id !== commentId),
+            commentCount: Math.max(0, (post.commentCount || 0) - 1),
           };
         }
         return post;
@@ -144,7 +255,14 @@ class FeedPage extends React.Component {
                   <PostCard
                     key={post.id}
                     post={post}
+                    currentUser={user}
                     onLike={this.handleLike}
+                    onRepost={this.handleRepost}
+                    onEdit={this.handleEditPost}
+                    onDelete={this.handleDeletePost}
+                    onAddComment={this.handleAddComment}
+                    onEditComment={this.handleEditComment}
+                    onDeleteComment={this.handleDeleteComment}
                   />
                 ))}
 

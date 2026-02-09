@@ -1,0 +1,106 @@
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.bentoCard {
+  background: var(--color-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.bentoCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary),
+    transparent
+  );
+  opacity: 0.5;
+}
+
+.bentoCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: 
+    0 12px 48px rgba(0, 255, 136, 0.25),
+    0 0 0 1px var(--color-primary) inset;
+  transform: translateY(-4px);
+}
+
+.bentoCard.glow:hover {
+  box-shadow: 
+    0 12px 48px rgba(0, 255, 136, 0.4),
+    0 0 32px var(--color-primary),
+    0 0 0 1px var(--color-primary) inset;
+}
+
+.span1 { grid-column: span 3; }
+.span2 { grid-column: span 4; }
+.span3 { grid-column: span 6; }
+.span4 { grid-column: span 8; }
+.span5 { grid-column: span 12; }
+
+@media (max-width: 1024px) {
+  .span1 { grid-column: span 4; }
+  .span2 { grid-column: span 6; }
+  .span3 { grid-column: span 8; }
+  .span4 { grid-column: span 12; }
+  .span5 { grid-column: span 12; }
+}
+
+@media (max-width: 768px) {
+  .bentoGrid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+
+  .span1 { grid-column: span 3; }
+  .span2 { grid-column: span 6; }
+  .span3 { grid-column: span 6; }
+  .span4 { grid-column: span 6; }
+  .span5 { grid-column: span 6; }
+
+  .bentoCard {
+    padding: 16px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bentoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .span1,
+  .span2,
+  .span3,
+  .span4,
+  .span5 {
+    grid-column: span 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bentoCard,
+  .bentoCard:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+}

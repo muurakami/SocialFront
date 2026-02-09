@@ -10,14 +10,14 @@
   backdrop-filter: blur(var(--blur-amount));
   -webkit-backdrop-filter: blur(var(--blur-amount));
   cursor: pointer;
-  z-index: 1000;
+  z-index: 9998;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all var(--transition-speed) ease;
   box-shadow: var(--shadow-base);
-
-  padding: 8px;
+  padding: 0;
+  overflow: hidden;
 }
 
 .toggle:hover {
@@ -38,6 +38,12 @@
   font-size: clamp(20px, 5vw, 28px);
   filter: drop-shadow(0 0 8px var(--color-primary));
   user-select: none;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -73,4 +79,30 @@
     top: 32px;
     left: 32px;
   }
+}
+
+/* ✅ ДОБАВЛЯЕМ НОВЫЙ КЛАСС */
+.toggleInline {
+  position: static !important; /* Отменяем fixed */
+  top: auto;
+  left: auto;
+  z-index: auto;
+  width: 32px; /* Чуть меньше для меню */
+  height: 32px;
+  min-width: 32px; /* Чтобы не сплющило */
+  margin: 0;
+  box-shadow: none; /* Тень в меню может мешать */
+  background: transparent; /* Прозрачный фон для меню */
+  border: 1px solid var(--color-primary-border);
+}
+
+.toggleInline .emoji {
+  font-size: 16px; /* Эмодзи поменьше */
+  animation: none; /* Убираем анимацию покачивания, чтобы не бесила в меню */
+}
+
+.toggleInline:hover {
+  transform: scale(1.1); /* Простой ховер */
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.1);
 }

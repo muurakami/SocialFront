@@ -83,14 +83,20 @@
 .avatarItem {
   padding: 6px;
   border-radius: 50%;
+  text-decoration: none !important;
 }
 
 .avatarItem:hover {
   background: var(--color-primary-dim);
   border-radius: 50%;
+  text-decoration: none !important;
 }
 
 .avatarItem.active {
   background: var(--color-primary-dim);
   box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.avatarItem.active::after {
+  display: none;
 }

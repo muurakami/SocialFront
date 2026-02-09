@@ -1,0 +1,221 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-background);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 2px solid var(--color-primary-border);
+  background: var(--color-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary),
+    transparent
+  );
+  opacity: 0.3;
+}
+
+.participantInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font-primary);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.status {
+  font-size: 13px;
+  color: #00ff88;
+  font-family: var(--font-mono);
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background: var(--color-primary-dim);
+  border-radius: 4px;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-border);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.messageGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.dateDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.dateLabel {
+  padding: 6px 16px;
+  background: var(--color-primary-dim);
+  border: 1px solid var(--color-primary-border);
+  border-radius: 12px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.message {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.message.own {
+  justify-content: flex-end;
+}
+
+.message.other {
+  justify-content: flex-start;
+}
+
+.avatarSpace {
+  width: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bubble {
+  max-width: 65%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bubble:hover {
+  transform: translateY(-1px);
+}
+
+.message.own .bubble {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border-bottom-right-radius: 4px;
+  box-shadow: 
+    0 4px 16px rgba(0, 255, 136, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.message.own .bubble:hover {
+  box-shadow: 
+    0 6px 24px rgba(0, 255, 136, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.message.other .bubble {
+  background: var(--color-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid var(--color-primary-border);
+  color: var(--color-text);
+  border-bottom-left-radius: 4px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.message.other .bubble:hover {
+  border-color: var(--color-primary);
+  box-shadow: 
+    0 6px 24px rgba(0, 255, 136, 0.2),
+    0 0 0 1px var(--color-primary) inset;
+}
+
+.content {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  font-family: var(--font-primary);
+}
+
+.timestamp {
+  font-size: 11px;
+  opacity: 0.7;
+  font-family: var(--font-mono);
+  align-self: flex-end;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 20px;
+  }
+
+  .messages {
+    padding: 16px;
+  }
+
+  .bubble {
+    max-width: 80%;
+  }
+}

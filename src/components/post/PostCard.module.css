@@ -1,16 +1,39 @@
 .card {
   background: var(--color-glass);
-  backdrop-filter: blur(var(--blur-amount));
-  -webkit-backdrop-filter: blur(var(--blur-amount));
-  border: 1px solid var(--color-primary-border);
-  border-radius: 16px;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 20px;
   padding: var(--spacing-inner);
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
-  transition: all var(--transition-speed) ease;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
 }
 
 .card:hover {
-  box-shadow: 0 4px 24px rgba(0, 255, 136, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 
+    0 12px 48px rgba(0, 255, 136, 0.2),
+    0 0 0 1px var(--color-primary) inset;
+  transform: translateY(-2px);
 }
 
 .header {
@@ -35,10 +58,197 @@
   white-space: nowrap;
 }
 
+.timeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .timestamp {
   font-size: var(--text-small);
   color: var(--color-text-muted);
   font-family: var(--font-mono);
+}
+
+.edited {
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-style: italic;
+}
+
+.menuContainer {
+  position: relative;
+  margin-left: auto;
+}
+
+.menuButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  padding: 0;
+}
+
+.menuButton:hover {
+  background: var(--color-primary-dim);
+  color: var(--color-primary);
+}
+
+.menuButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 160px;
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border: 2px solid var(--color-primary-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  z-index: 100;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  text-align: left;
+}
+
+.menuItem:hover {
+  background: var(--color-primary-dim);
+}
+
+.menuItem:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.menuItemDanger {
+  color: #ff4444;
+}
+
+.menuItemDanger:hover {
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.menuIcon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editTextarea {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-primary-dim);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 15px;
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: all var(--transition-speed) ease;
+}
+
+.editTextarea:focus {
+  border-color: var(--color-primary);
+  background: var(--color-glass);
+}
+
+.editActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.editCancel,
+.editSave {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.editCancel {
+  background: transparent;
+  border: 2px solid var(--color-primary-border);
+  color: var(--color-text);
+}
+
+.editCancel:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-dim);
+}
+
+.editSave {
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  color: var(--color-background);
+}
+
+.editSave:hover:not(:disabled) {
+  box-shadow: 0 0 16px var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.editSave:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editCancel:focus-visible,
+.editSave:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .content p {
@@ -83,6 +293,7 @@
   cursor: pointer;
   transition: all var(--transition-speed) ease;
   min-height: 36px;
+  position: relative;
 }
 
 .actionBtn:hover {
@@ -97,9 +308,48 @@
 }
 
 .actionBtn.liked {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.actionBtn.liked:hover {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.15);
+}
+
+.actionBtn.reposted {
+  color: #00ff88;
+  border-color: #00ff88;
+  background: rgba(0, 255, 136, 0.1);
+}
+
+.actionBtn.reposted:hover {
+  color: #00ff88;
+  background: rgba(0, 255, 136, 0.15);
+}
+
+.actionBtn.copied {
   color: var(--color-primary);
   border-color: var(--color-primary);
   background: var(--color-primary-dim);
+}
+
+.copyText {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .icon {
@@ -112,14 +362,3 @@
   font-weight: 500;
 }
 
-.comments {
-  margin-top: var(--spacing-element);
-  padding-top: var(--spacing-element);
-  border-top: 1px solid var(--color-primary-border);
-}
-
-.commentsPlaceholder {
-  color: var(--color-text-muted);
-  font-size: var(--text-small);
-  font-style: italic;
-}

@@ -30,17 +30,25 @@ class ThemeToggle extends React.Component {
     this.setState({ theme: newTheme });
     this.applyTheme(newTheme);
   };
-
   render() {
     const { theme } = this.state;
+    // Получаем вариант из пропсов (по умолчанию "fixed")
+    const { variant = "fixed" } = this.props;
+
     const emoji = theme === "dark" ? "🌙" : "☀️";
+
+    // Выбираем класс в зависимости от варианта
+    const buttonClass =
+      variant === "inline"
+        ? `${styles.toggle} ${styles.toggleInline}`
+        : styles.toggle;
 
     return (
       <button
-        className={styles.toggle}
+        className={buttonClass}
         onClick={this.toggleTheme}
         aria-label="Toggle theme"
-        title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        type="button" // Важно, чтобы не сабмитил формы
       >
         <span className={styles.emoji}>{emoji}</span>
       </button>
